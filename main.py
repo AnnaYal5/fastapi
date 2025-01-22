@@ -1,6 +1,18 @@
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 
 app = FastAPI()
+
+
+@app.get("/calculate")
+def calculate(operation: str, num1: float, num2: float):
+    if operation == "+":
+        return {"result": num1 + num2}
+    elif operation == "-":
+        return {"result": num1 - num2}
+    else:
+        raise HTTPException(status_code=400, detail="Invalid operation. Use '+' or '-'")
+
+
 
 books_db = []
 
