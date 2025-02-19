@@ -1,5 +1,4 @@
-from fastapi import FastAPI, Request, HTTPException
-import uvicorn
+from fastapi import FastAPI, HTTPException, Path
 
 app = FastAPI()
 
@@ -12,5 +11,11 @@ users_db = [
     {"user_id": 5, "name": "Максим","group_id": 3, "active": False}
 ]
 
+
 @app.get("/users/{user_id}")
-async def user(user_id = int)
+async def user(user_id: int):
+    users_dict = {user['user_id']: user for user in users_db}
+    user = users_dict.get(user_id)
+    if user and user['active'] is True:
+        return user
+    raise HTTPException(status_code=404, detail="user not found")
